@@ -31,6 +31,8 @@ if [ $? -eq 1 ]
     npm install moment;
 fi
 
+wait;
+
 tmux new-session -d -s githubWebhooksTelegram;
 
 tmux send-keys -t githubWebhooksTelegram 'tmux split-window -h' Enter;
