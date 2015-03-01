@@ -1,0 +1,54 @@
+#checking required packages
+
+command -v git >/dev/null 2>&1 || { echo >&2 "I require git but it's not installed.  Aborting."; exit 1; }
+
+command -v nodejs >/dev/null 2>&1 || { echo >&2 "I require nodejs but it's not installed.  Aborting."; exit 1; }
+
+command -v tmux >/dev/null 2>&1 || { echo >&2 "I require tmux but it's not installed.  Aborting."; exit 1; }
+
+command -v ~/tg/bin/telegram-cli >/dev/null 2>&1 || { echo >&2 "I require telegram-cli but it's not installed.  Aborting."; exit 1; }
+
+echo "checking dependancies...";
+
+line=$(npm ls | grep express)
+if [ $? -eq 1 ]
+    then
+    echo "Node package express not present installing..."
+    npm install express;
+fi
+
+line=$(npm ls | grep body-parser)
+if [ $? -eq 1 ]
+    then
+    echo "Node package body-parser not present installing..."
+    npm install body-parser;
+fi
+
+line=$(npm ls | grep moment)
+if [ $? -eq 1 ]
+    then
+    echo "Node package moment not present installing..."
+    npm install moment;
+fi
+
+tmux new-session -d -s githubWebhooksTelegram;
+
+tmux send-keys -t githubWebhooksTelegram 'tmux split-window -h' Enter;
+
+tmux select-pane -t 0;
+
+tmux send-keys -t githubWebhooksTelegram "nodejs ~/githubWebhooksTelegram/server.js" Enter;
+
+tmux select-pane -t 1;
+
+sleep 2s;
+
+tmux send-keys -t githubWebhooksTelegram "~/tg/bin/telegram-cli -k ~/tg/tg-server.pub" Enter;
+
+tmux send-keys -t githubWebhooksTelegram "dialog_list" Enter;
+
+echo "Tmux session, githubWebhooksTelegram, created"
+
+echo "use \"tmux attach -t githubWebhooksTelegram\" to attach to session"
+
+echo "use \"tmux detach\" once inside to return"
