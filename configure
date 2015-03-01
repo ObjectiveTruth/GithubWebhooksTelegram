@@ -37,7 +37,7 @@ tmux send-keys -t githubWebhooksTelegram 'tmux split-window -h' Enter;
 
 tmux select-pane -t 0;
 
-tmux send-keys -t githubWebhooksTelegram "nodejs ~/githubWebhooksTelegram/server.js" Enter;
+tmux send-keys -t githubWebhooksTelegram "nodejs ~/GithubWebhooksTelegram/server.js" Enter;
 
 tmux select-pane -t 1;
 
