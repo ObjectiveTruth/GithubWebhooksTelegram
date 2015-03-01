@@ -18,15 +18,15 @@ Requires:
 
 * Git
 
-    apt-get install git
+    ```apt-get install git```
 
 * Nodejs
 
-    apt-get install node
+    ```apt-get install node```
 
 * NPM
 
-    apt-get install npm
+    ```apt-get install npm```
 
 * Telegram-CLI
 
