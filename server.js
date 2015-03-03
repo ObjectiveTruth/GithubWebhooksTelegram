@@ -48,20 +48,22 @@ app.post('/githooks/:chatroom', function(request, response){
     console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
 
     console.log("    Destination Chatroom:\n " + chatRoom);
-    var message = "**" + repositoryName + "**\\n    " + defaultBranch + "\\n"
+    var message = "\"**" + repositoryName + "**\\n    " + defaultBranch + "\\n"
         + "committed by\\n    " + committer + ":\\n"
-        + commitHash.substring(0, 8) + ":\\n    " + commitMessage + "\\n-" + commitAuthor;
+        + commitHash.substring(0, 8) + ":\\n    " + commitMessage + "\\n-" + commitAuthor
+        + "\"";
 
     console.log('    message to be sent:');
     console.log(message + "\n");
         
 
 
-    var cliCommand = "tmux send-keys -t telegramGithubWebhook \"msg " + chatRoom + " \'" 
-             + message + "\'\" Enter";
-
-    console.log('    CLI Command: ');
-    console.log(cliCommand);
+    var cliCommand = 'tmux send-keys -t githubWebhooksTelegram \"msg ' + chatRoom + ' \"'; 
+    var cliCommand2 = 'tmux send-keys -t githubWebhooksTelegram \" \\\" \"' + message
+        + '\" \\\" \" Enter';
+             //+ message + '\" Enter';
+//  console.log('    CLI Command: ');
+//  console.log(cliCommand);
 
     child = exec(cliCommand , function(error, stdout, stderr){
 
@@ -70,6 +72,12 @@ app.post('/githooks/:chatroom', function(request, response){
         }
     });
 
+    child = exec(cliCommand2 , function(error, stdout, stderr){
+
+        if(error != null){
+            console.log('exec error: ' + error);
+        }
+    });
     response.sendStatus(200);
 
     console.log("========");
